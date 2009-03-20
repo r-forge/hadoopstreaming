@@ -7,7 +7,7 @@ streaming. Allows specifying input and output files, column separators,
 and much more. Optionally opens the I/O connections. 
 }
 \usage{
-hsCmdLineArgs(spec=c(),openConnections=T,args=commandArgs(T))
+hsCmdLineArgs(spec=c(),openConnections=TRUE,args=commandArgs(TRUE))
 }
 \arguments{
   \item{spec}{A vector specifying the command line args to support.}
@@ -43,7 +43,7 @@ basespec = c(
   'infile'   ,  'i', 1, "character","Specifies an input file, otherwise use stdin.",NA,
   'outfile',    'o', 1, "character","Specifies an output file, otherwise use stdout.",NA,
   'skip',       's',1,"numeric","Number of lines of input to skip at the beginning.",0,
-  'numlines',   'n',1,"numeric","Max number of lines to read from input, per mapper or reducer job.",0,
+  'numlines',   'n',1,"numeric","Max num lines to read per mapper or reducer job.",0,
   'sepr',       'e',1,"character","Separator character, as used by scan.",'\t',
   'insep',      'f',1,"character","Separator character for input, defaults to sepr.",NA,
   'outsep',     'g',1,"character","Separator character output, defaults to sepr.",NA,
@@ -63,20 +63,20 @@ basespec = c(
   input source specified, and outcon is a writable connection to the
   appropriate output destination.
   
-  An additional entry in the returned list is opts$set.  When FALSE,
-  none of the options were set (generally because -h or --help was
-  requested).  The calling procedure should probably stop
-  execution when opts$set is returned as FALSE.
+  An additional entry in the returned list is named \code{'set'}.
+  When this list entry is FALSE, none of the options were set
+  (generally because -h or --help was requested).  The calling
+  procedure should probably stop execution when the \code{'set'} is
+  returned as FALSE.
 }
 \author{David S. Rosenberg \email{drosen@sensenetworks.com} }
 \seealso{This package relies heavily on package \pkg{getopt}}
 \examples{
-
 spec = c('chunkSize','c',1,"numeric","Number of lines to read at once, a la scan.",-1)
 ## Displays the help string
 hsCmdLineArgs(spec, args=c('-h'))
 ## Call with the mapper flag, and request that connections be opened
-opts = hsCmdLineArgs(spec, openConnections=T,args=c('-m'))
+opts = hsCmdLineArgs(spec, openConnections=TRUE,args=c('-m'))
 opts  #   a list of argument values
 opts$incon # an input connection
 opts$outcon # an output connection

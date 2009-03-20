@@ -1,5 +1,5 @@
 `hsTableReader` <-
-  function(file="",cols='character',chunkSize=-1,FUN=print, ignoreKey=T,singleKey=T, skip=0, sep='\t',keyCol='key',PFUN=NULL) {
+  function(file="",cols='character',chunkSize=-1,FUN=print, ignoreKey=TRUE,singleKey=TRUE, skip=0, sep='\t',keyCol='key',PFUN=NULL) {
     ## flush=TRUE  (allows comment, but precludes more than one record per line, which is good)
     if (skip > 0) {
       junk = scan(file,what='character',quiet=TRUE,sep=sep,nlines=skip)
@@ -7,7 +7,7 @@
     
     if (ignoreKey) {
       repeat {
-        a = scan(file,what=cols,quiet=T,sep=sep,strip.white=T,nlines=chunkSize,flush=T)
+        a = scan(file,what=cols,quiet=TRUE,sep=sep,strip.white=TRUE,nlines=chunkSize,flush=TRUE)
         if ( length(a[[1]]) ==0 ) break
         FUN(data.frame(a,stringsAsFactors=FALSE))
       }
@@ -17,11 +17,11 @@
     if (is.null(PFUN)) {
       ## Carryover Frame
       aCarry = data.frame()
-      fileEmpty = T
+      fileEmpty = TRUE
       repeat {
-        a = scan(file,what=cols,quiet=T,sep=sep,strip.white=T,nlines=chunkSize,flush=T)
+        a = scan(file,what=cols,quiet=TRUE,sep=sep,strip.white=TRUE,nlines=chunkSize,flush=TRUE)
         if ( length(a[[keyCol]]) == 0 ) break
-        fileEmpty = F
+        fileEmpty = FALSE
         ## Prepend last carry to new data and stick last user into carry
         a = rbind(aCarry,data.frame(a,stringsAsFactors=FALSE))
         r = rle(a[,keyCol])
@@ -55,7 +55,7 @@
     ## !is.null(PFUN)   here we handle partial keys in a streaming faction, rather than waiting for full key
     prevKey = NA
     repeat {
-      a = scan(file,what=cols,quiet=T,sep=sep,strip.white=T,nlines=chunkSize,flush=T)
+      a = scan(file,what=cols,quiet=TRUE,sep=sep,strip.white=TRUE,nlines=chunkSize,flush=TRUE)
       if ( length(a[[keyCol]]) == 0 ) break
       a = data.frame(a,stringsAsFactors=FALSE)
       r = rle(a[,keyCol])

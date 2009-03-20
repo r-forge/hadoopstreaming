@@ -9,7 +9,7 @@
   to FUN as a character vector of keys and character vector of values.
 }
 \usage{
-hsKeyValReader(file = "", chunkSize = -1, skip = 0, sep = "\t", FUN = function(k, v) cat(paste(k, v, sep = ": "), sep = "\n"))
+hsKeyValReader(file = "", chunkSize = -1, skip = 0, sep = "\t",FUN = function(k, v) cat(paste(k, v, sep = ": "), sep = "\n"))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

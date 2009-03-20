@@ -3,7 +3,7 @@
 \alias{HadoopStreaming}
 \docType{package}
 \title{
-I/O Wrappers for Hadoop streaming.
+Functions facilitating Hadoop streaming with R.
 }
 \description{
   This package facilitates a fairly literal implementation of
@@ -35,7 +35,7 @@ separated by a separator character)
 data parsing.
 }
 Only hsTableReader will break the data into chunks comprising all rows
-of the same key.  This _assumes_ that all rows with the same key are
+of the same key.  This \emph{assumes} that all rows with the same key are
 stored consecutively in the input file.  This is always the case if
 the input file is taken to be the STDIN pipe to a Hadoop reducer,
 since Hadoop guarantees that the rows given to the reducer are sorted
@@ -61,11 +61,11 @@ in Hadoop, see the directory <RLibraryPath>/HadoopStreaming/wordCntDemo/
 and the README file there.
 }
 \author{ David S. Rosenberg <drosen@sensenetworks.com> }
-\references{
-  \itemize{
-    \item Hadoop Main Site \link{http://hadoop.apache.org}
-  } \keyword{ package } \seealso{
-\code{\link[RHIPE:RHIPE-package]{RHIPE}} } \examples{
+\keyword{ package }
+\seealso{
+  \code{\link[RHIPE:RHIPE-package]{RHIPE}} 
+}
+\examples{
 ## STEP 1: MAKE A CONNECTION
 
 ## To read from STDIN (used for deployment in Hadoop streaming and for command line testing)
