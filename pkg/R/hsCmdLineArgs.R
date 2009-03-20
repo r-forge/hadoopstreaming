@@ -7,6 +7,7 @@ hsCmdLineArgs <- function(spec=c(),openConnections=TRUE,args=commandArgs(TRUE)) 
     'infile'   ,  'i', 1, "character","Specifies an input file, otherwise use stdin.",NA,
     'outfile',    'o', 1, "character","Specifies an output file, otherwise use stdout.",NA,
     'skip',       's',1,"numeric","Number of lines of input to skip at the beginning.",0,
+    'chunksize','C',1,"numeric","Number of lines to read at once, a la scan.",-1,
     'numlines',   'n',1,"numeric","Max number of lines to read from input, per mapper or reducer job.",0,
     'sepr',       'e',1,"character","Separator character, as used by scan.",'\t',
     'insep',      'f',1,"character","Separator character for input, defaults to sepr.",NA,

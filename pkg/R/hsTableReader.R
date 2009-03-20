@@ -48,7 +48,9 @@
         if (startPos != firstRowOfLastKey) stop("startPos != firstRowOfLastKey")
       }
       if (!ignoreKey && !fileEmpty && nrow(aCarry)==0) stop ("empty aCarry at end -- this should never happen!!!")
-      FUN(aCarry)
+      if (nrow(aCarry)>0) {
+        FUN(aCarry)
+      }
       return(invisible())
     }
 
