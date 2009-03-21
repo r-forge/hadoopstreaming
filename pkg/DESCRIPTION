@@ -1,6 +1,6 @@
 Package: HadoopStreaming
 Type: Package
-Title: What the package does (short line)
+Title: Utilities for using R scripts in Hadoop streaming
 Version: 0.1
 Date: 2009-03-16
 Author: David S. Rosenberg <drosen@sensenetworks.com>
