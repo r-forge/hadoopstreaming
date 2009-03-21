@@ -6,9 +6,5 @@ Date: 2009-03-16
 Author: David S. Rosenberg <drosen@sensenetworks.com>
 Maintainer: David S. Rosenberg <drosen@sensenetworks.com>
 Depends: getopt
-Description:   This package facilitates a fairly literal implementation of
-  map/reduce streaming in R.  It also facilitates operating on data in
-  a streaming fashion, without using Hadoop at all. A function is
-  provided for handling many of the command line arguments that are
-  useful for streaming data.
+Description: Provides a framework for writing map/reduce scripts for use in Hadoop Streaming. Also facilitates operating on data in a streaming fashion, without Hadoop.
 License: GPL

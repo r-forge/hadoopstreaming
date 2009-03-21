@@ -3,13 +3,15 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Chunks input data into data frames}
 \description{
-This function repeatedly reads a chunk of data from an input connection,
+This function repeatedly reads chunks of data from an input connection,
 packages the data as a data.frame, optionally ensures that all the rows
 for certain keys are contained in the data.frame, and passes the data.frame to
 a handler for processing.  This continues until the end of file.
 }
 \usage{
-hsTableReader(file = "", cols = "character", chunkSize = -1, FUN = print, ignoreKey = TRUE, singleKey = TRUE, skip = 0, sep = "\t", keyCol = "key",PFUN=NULL)
+hsTableReader(file = "", cols = "character", chunkSize = -1,
+FUN = print, ignoreKey = TRUE, singleKey = TRUE,
+ skip = 0, sep = "\t", keyCol = "key",PFUN=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

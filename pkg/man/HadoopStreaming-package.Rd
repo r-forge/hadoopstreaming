@@ -6,23 +6,21 @@
 Functions facilitating Hadoop streaming with R.
 }
 \description{
-  This package facilitates a fairly literal implementation of
-  map/reduce streaming in R.  It also facilitates operating on data in
-  a streaming fashion, without using Hadoop at all. A function is
-  provided for handling many of the command line arguments that are
-  useful for streaming data.
+Provides a framework for writing map/reduce scripts for use in Hadoop
+Streaming. Also facilitates operating on data in a streaming fashion,
+without Hadoop.
 }
 \details{
 \tabular{ll}{
 Package: \tab HadoopStreaming\cr
 Type: \tab Package\cr
 Version: \tab 0.1\cr
-Date: \tab 2009-03-11\cr
+Date: \tab 2009-03-16\cr
 License: \tab GNU \cr
 LazyLoad: \tab yes\cr
 }
 The functions in this package read data in chunks from a file connection
-(STDIN when used with Hadoop streaming), package up the chunks in
+(stdin when used with Hadoop streaming), package up the chunks in
 various ways, and pass the packaged versions to user-supplied
 functions.
 
@@ -37,24 +35,24 @@ data parsing.
 Only hsTableReader will break the data into chunks comprising all rows
 of the same key.  This \emph{assumes} that all rows with the same key are
 stored consecutively in the input file.  This is always the case if
-the input file is taken to be the STDIN pipe to a Hadoop reducer,
+the input file is taken to be the stdin provided by Hadoop in a
+Hadoop streaming job,
 since Hadoop guarantees that the rows given to the reducer are sorted
 by key.  When running from the command line (not in Hadoop), we can
 use the sort utility to sort the keys ourselves.
 
-In addition to the data reading functions, the function hsCmdLineArgs
-offers several default command line arguments for doing things such
-as, specifying an input file, the number of lines of input to read,
-the input and output column separators, etc.
-
-The hsCmdLineArgs function also facilitates packaging both the mapper
+In addition to the data reading functions, the function
+\code{hsCmdLineArgs} offers several default command line arguments for
+doing things such as specifying an input file, the number of lines of
+input to read, the input and output column separators, etc.
+The \code{hsCmdLineArgs} function also facilitates packaging both the mapper
 and reducer scripts into a single R script by accept arguments
 --mapper and --reducer to specify whether the call to the script
 should execute the mapper branch or the reducer.
 
-The examples below give some support code for using these functions.
-Details on using the functions themselves can be found in the
-documentation for those functions.
+The examples below give a bit of support code for using the functions in
+this package. Details on using the functions themselves can be found in
+the documentation for those functions.
 
 For a full demo of running a map/reduce script from the command line and
 in Hadoop, see the directory <RLibraryPath>/HadoopStreaming/wordCntDemo/
