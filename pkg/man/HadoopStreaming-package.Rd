@@ -14,8 +14,8 @@ without Hadoop.
 \tabular{ll}{
 Package: \tab HadoopStreaming\cr
 Type: \tab Package\cr
-Version: \tab 0.1\cr
-Date: \tab 2009-03-16\cr
+Version: \tab 0.15\cr
+Date: \tab 2009-04-03\cr
 License: \tab GNU \cr
 LazyLoad: \tab yes\cr
 }
