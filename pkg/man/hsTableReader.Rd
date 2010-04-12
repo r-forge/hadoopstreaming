@@ -9,9 +9,10 @@ for certain keys are contained in the data.frame, and passes the data.frame to
 a handler for processing.  This continues until the end of file.
 }
 \usage{
-hsTableReader(file = "", cols = "character", chunkSize = -1,
-FUN = print, ignoreKey = TRUE, singleKey = TRUE,
- skip = 0, sep = "\t", keyCol = "key",PFUN=NULL)
+hsTableReader(file="",cols='character',chunkSize=-1,FUN=print,
+ignoreKey=TRUE,singleKey=TRUE, skip=0, sep='\t',
+keyCol='key', PFUN=NULL,carryMemLimit=512e6,carryMaxRows=Inf,
+stringsAsFactors=FALSE,debug=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,6 +30,10 @@ FUN = print, ignoreKey = TRUE, singleKey = TRUE,
   \item{sep}{Any separator character accepted by scan}
   \item{keyCol}{The column name of the column with the keys.}
   \item{PFUN}{Same as FUN, except handles incomplete keys. See below.}
+  \item{carryMemLimit}{Max memory used for values of a single key}
+  \item{carryMaxRows}{Max number of values allowed for a key.}
+  \item{stringsAsFactors}{Whether strings converted to factors.}
+  \item{debug}{Whether to print debug messages.}
 }
 \details{
   With ignoreKey=TRUE, hsTableReader reads from file, chunkSize lines at

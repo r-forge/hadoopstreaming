@@ -7,13 +7,16 @@ hsCmdLineArgs <- function(spec=c(),openConnections=TRUE,args=commandArgs(TRUE)) 
     'infile'   ,  'i', 1, "character","Specifies an input file, otherwise use stdin.",NA,
     'outfile',    'o', 1, "character","Specifies an output file, otherwise use stdout.",NA,
     'skip',       's',1,"numeric","Number of lines of input to skip at the beginning.",0,
-    'chunksize','C',1,"numeric","Number of lines to read at once, a la scan.",-1,
+    'chunksize',  'c',1,"numeric","Number of lines to read at once, a la scan.",-1,
+    'memlim',     'z',1,"numeric","Max number of bytes allowed for use in carry.",-1,
     'numlines',   'n',1,"numeric","Max number of lines to read from input, per mapper or reducer job.",0,
     'sepr',       'e',1,"character","Separator character, as used by scan.",'\t',
     'insep',      'f',1,"character","Separator character for input, defaults to sepr.",NA,
     'outsep',     'g',1,"character","Separator character output, defaults to sepr.",NA,
+    'debug',      'd',0,"logical","Turn on debugging output.",FALSE,
     'help',       'h',0,"logical","Get a help message.",FALSE
     )
+
   specmat = matrix(c(spec,basespec),ncol=6,byrow=TRUE)
 
   opt = getopt(specmat[,1:5],opt=args)
@@ -36,7 +39,7 @@ hsCmdLineArgs <- function(spec=c(),openConnections=TRUE,args=commandArgs(TRUE)) 
     ## self = commandArgs()[1];
     cat(getopt(specmat,usage=TRUE))
     opt$set = FALSE
-    return(opt)
+##    return(opt)
   }
 
   if (openConnections) {
@@ -58,6 +61,7 @@ hsCmdLineArgs <- function(spec=c(),openConnections=TRUE,args=commandArgs(TRUE)) 
       opt$outcon = file(description=opt$outfile,open="w")
     }
   }
+
   opt$set = TRUE
   return(opt)
 }

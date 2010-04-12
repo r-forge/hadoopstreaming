@@ -73,7 +73,7 @@ basespec = c(
 \author{David S. Rosenberg \email{drosen@sensenetworks.com} }
 \seealso{This package relies heavily on package \pkg{getopt}}
 \examples{
-spec = c('chunkSize','c',1,"numeric","Number of lines to read at once, a la scan.",-1)
+spec = c('myChunkSize','C',1,"numeric","Number of lines to read at once, a la scan.",-1)
 ## Displays the help string
 hsCmdLineArgs(spec, args=c('-h'))
 ## Call with the mapper flag, and request that connections be opened

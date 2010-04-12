@@ -1,15 +1,15 @@
 `hsTableReader` <-
-  function(file="",cols='character',chunkSize=-1,FUN=print, ignoreKey=TRUE,singleKey=TRUE, skip=0, sep='\t',keyCol='key',PFUN=NULL) {
+  function(file="",cols='character',chunkSize=-1,FUN=print, ignoreKey=TRUE,singleKey=TRUE, skip=0, sep='\t', keyCol='key', PFUN=NULL,carryMemLimit=512e6,carryMaxRows=Inf,stringsAsFactors=FALSE,debug=FALSE) {
     ## flush=TRUE  (allows comment, but precludes more than one record per line, which is good)
     if (skip > 0) {
-      junk = scan(file,what='character',quiet=TRUE,sep=sep,nlines=skip)
+      junk = scan(file,what='character',quiet=!debug,sep=sep,nlines=skip)
     }
     
     if (ignoreKey) {
       repeat {
-        a = scan(file,what=cols,quiet=TRUE,sep=sep,strip.white=TRUE,nlines=chunkSize,flush=TRUE)
+        a = scan(file,what=cols,quiet=!debug,sep=sep,strip.white=TRUE,nlines=chunkSize,flush=TRUE)
         if ( length(a[[1]]) ==0 ) break
-        FUN(data.frame(a,stringsAsFactors=FALSE))
+        FUN(data.frame(a,stringsAsFactors=stringsAsFactors))
       }
       return(invisible())
     }
@@ -19,33 +19,36 @@
       aCarry = data.frame()
       fileEmpty = TRUE
       repeat {
-        a = scan(file,what=cols,quiet=TRUE,sep=sep,strip.white=TRUE,nlines=chunkSize,flush=TRUE)
+        if (object.size(aCarry)>carryMemLimit || nrow(aCarry) > carryMaxRows) {
+          cat('In hsTableReader, aCarry has exceeded defined limits on memory and/or rows\n',file=stderr())
+          cat('Key=',aCarry[1,keyCol],' MemoryUsed=',object.size(aCarry)/(2^20),'MB; NumRows=',nrow(aCarry),'\n',sep='',file=stderr())
+          cat('Consider using higher values for carryMemLimit and carryMaxRows,\nOR use PFUN to handle incomplete keys.\n',file=stderr())
+          ## Throw out the carryover data because getting too big
+          aCarry=data.frame()
+        }
+        a = scan(file,what=cols,quiet=!debug,sep=sep,strip.white=TRUE,nlines=chunkSize,flush=TRUE)
+        ## Memory Report
+        if (debug) {
+          cat('In hsTableReader, we have just scanned ',object.size(a)/(2^20),'MB. Current carry size is ',object.size(aCarry)/(2^20),'\n',file=stderr())
+        }
+        ## Done processing, because scan returned nothing
         if ( length(a[[keyCol]]) == 0 ) break
         fileEmpty = FALSE
-        ## Prepend last carry to new data and stick last user into carry
-        a = rbind(aCarry,data.frame(a,stringsAsFactors=FALSE))
-        r = rle(a[,keyCol])
-        numDistinctKeys = length(r$values)
-        if (numDistinctKeys == 1) {
-          aCarry = a
-          next
-        }
-        firstRowOfLastKey = nrow(a) - r$lengths[numDistinctKeys] + 1
-        if (firstRowOfLastKey <=1 || firstRowOfLastKey > nrow(a)) stop("Problem with firstRowOfLastKey")
+        ## Prepend last carry to new data and convert scanned stuff to data.frame
+        a = rbind(aCarry,data.frame(a,stringsAsFactors=stringsAsFactors))
+        ##  Stick last user into aCarry
+        lastKey = a[nrow(a),keyCol]
+        firstRowOfLastKey = match(lastKey,a[,keyCol])
         aCarry = a[ firstRowOfLastKey:nrow(a) , ]
         if (!singleKey) {
           ## Process all complete keys at once
           FUN(a[1:(firstRowOfLastKey-1) , ])
           next
         }
-        ## Process all complete keys, one at a time
-        startPos = 1
-        for (keyNum in 1:(numDistinctKeys-1)) {
-          endPos = startPos+r$lengths[keyNum]-1
-          FUN(a[startPos:endPos,])
-          startPos = endPos+1
+        if (firstRowOfLastKey >= 2) {
+          ## Process all complete keys, one at a time
+          by(a[1:(firstRowOfLastKey-1),], a[1:(firstRowOfLastKey-1),keyCol], FUN)        
         }
-        if (startPos != firstRowOfLastKey) stop("startPos != firstRowOfLastKey")
       }
       if (!ignoreKey && !fileEmpty && nrow(aCarry)==0) stop ("empty aCarry at end -- this should never happen!!!")
       if (nrow(aCarry)>0) {
@@ -57,9 +60,9 @@
     ## !is.null(PFUN)   here we handle partial keys in a streaming faction, rather than waiting for full key
     prevKey = NA
     repeat {
-      a = scan(file,what=cols,quiet=TRUE,sep=sep,strip.white=TRUE,nlines=chunkSize,flush=TRUE)
+      a = scan(file,what=cols,quiet=!debug,sep=sep,strip.white=TRUE,nlines=chunkSize,flush=TRUE)
       if ( length(a[[keyCol]]) == 0 ) break
-      a = data.frame(a,stringsAsFactors=FALSE)
+      a = data.frame(a,stringsAsFactors=stringsAsFactors)
       r = rle(a[,keyCol])
       numDistinctKeys = length(r$values)
       startKey = 1

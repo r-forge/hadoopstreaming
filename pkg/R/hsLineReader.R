@@ -1,5 +1,5 @@
 `hsLineReader` <-
-function(file="",chunkSize=-1, skip=0, FUN=function(x) cat(x,sep='\n')) {
+function(file="",chunkSize=-1L, skip=0L, FUN=function(x) cat(x,sep='\n')) {
   if (skip>0) {
     junk = readLines(file, n=skip)
   }

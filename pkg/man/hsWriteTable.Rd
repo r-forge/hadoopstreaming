@@ -11,7 +11,7 @@ hsWriteTable(d, file = "", sep = "\t")
 \arguments{
   \item{d}{A data frame}
   \item{file}{A connection, as taken by write.table()}
-  \item{sep}{The column separator, defaults to a tab character.}
+  \item{sep}{The column separator, defaults to a tab character}
 }
 \value{
   No return value.

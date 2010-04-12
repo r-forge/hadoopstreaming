@@ -4,7 +4,7 @@
 library(HadoopStreaming)
 
 ## Additional command line arguments for this script (rest are default in hsCmdLineArgs)
-spec = c('chunkSize','c',1,"numeric","Number of lines to read at once, a la scan.",-1)
+spec = c('printDone','D',0,"logical","A flag to write DONE at the end.",FALSE)
 
 opts = hsCmdLineArgs(spec, openConnections=T)
 
@@ -32,7 +32,7 @@ if (opts$mapper) {
     hsWriteTable(df[,mapperOutCols],file=opts$outcon,sep=opts$outsep)
   }
 
-  hsLineReader(opts$incon,chunkSize=opts$chunkSize,FUN=mapper)
+  hsLineReader(opts$incon,chunkSize=opts$chunksize,FUN=mapper)
 
 } else if (opts$reducer) {
 
@@ -40,7 +40,10 @@ if (opts$mapper) {
     cat(d[1,'word'],sum(d$cnt),'\n',sep=opts$outsep)
   }
   cols=list(word='',cnt=0)  # define the column names and types (''-->string 0-->numeric)
-  hsTableReader(opts$incon,cols,chunkSize=opts$chunkSize,skip=opts$skip,sep=opts$insep,keyCol='word',singleKey=T, ignoreKey= F, FUN=reducer)
+  hsTableReader(opts$incon,cols,chunkSize=opts$chunksize,skip=opts$skip,sep=opts$insep,keyCol='word',singleKey=T, ignoreKey= F, FUN=reducer)
+  if (opts$printDone) {
+    cat("DONE\n");
+  }
 }
 
 if (!is.na(opts$infile)) {
