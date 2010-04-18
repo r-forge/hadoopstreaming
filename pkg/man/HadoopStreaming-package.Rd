@@ -14,8 +14,8 @@ without Hadoop.
 \tabular{ll}{
 Package: \tab HadoopStreaming\cr
 Type: \tab Package\cr
-Version: \tab 0.15\cr
-Date: \tab 2009-04-03\cr
+Version: \tab 0.2\cr
+Date: \tab 2009-09-28\cr
 License: \tab GNU \cr
 LazyLoad: \tab yes\cr
 }
@@ -60,9 +60,6 @@ and the README file there.
 }
 \author{ David S. Rosenberg <drosen@sensenetworks.com> }
 \keyword{ package }
-\seealso{
-  \code{\link[RHIPE:RHIPE-package]{RHIPE}} 
-}
 \examples{
 ## STEP 1: MAKE A CONNECTION
 
